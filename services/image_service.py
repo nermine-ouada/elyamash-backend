@@ -1,6 +1,6 @@
 from repositories.image_repo_db import ImageRepoDB
 from repositories.image_repo_blob import ImageRepoBlob
-from schemas.schemas import ImageUpdate
+from models.schemas import ImageUpdate
 
 
 class ImageService:

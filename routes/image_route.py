@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Security, File, UploadFile, HTTPException
-from schemas.schemas import ImageUpdate
+from models.schemas import ImageUpdate
 from services.image_service import ImageService
 from services.user_service import UserService
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
