@@ -1,6 +1,7 @@
+from datetime import datetime
 from sqlalchemy.orm import Session
 from models.tables import User
-from schemas.schemas import UserCreate, UserUpdate
+from models.schemas import UserCreate, UserUpdate
 from utils.utils import hash_password
 import uuid
 
@@ -28,20 +29,22 @@ class UserRepository:
 
     def get_all_users(self):
         return self.db_session.query(User).all()
+
     def get_number_of_users(self):
         return self.db_session.query(User).count()
+
     def get_user_by_username(self, username: str):
         return self.db_session.query(User).filter(User.username == username).first()
 
     def get_user_by_email(self, email: str):
         return self.db_session.query(User).filter(User.email == email).first()
 
-    def update_user(self, user_id: str, user: UserUpdate):
+    def update_user(self, user_id: str, user_update: UserUpdate):
         existing_user = self.get_user_by_id(user_id)
         if existing_user:
-            existing_user.username = user.username
-            existing_user.hashed_password = hash_password(user.password)
-
+            for field, value in user_update.dict().items():
+                setattr(existing_user, field, value)
+            existing_user.updated_at = datetime.now()
             self.db_session.commit()
             self.db_session.refresh(existing_user)
             self.db_session.close()
@@ -57,5 +60,3 @@ class UserRepository:
 
             return user
         return None
-    
-    

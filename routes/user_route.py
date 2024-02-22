@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, Security
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
-from schemas.schemas import UserCreate, UserUpdate
+from models.schemas import UserCreate, UserUpdate
 from services.user_service import UserService
 from utils.utils import decode_bearer_token
 

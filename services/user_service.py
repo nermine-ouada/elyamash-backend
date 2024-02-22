@@ -1,5 +1,5 @@
 from repositories.user_repository import UserRepository
-from schemas.schemas import UserCreate, UserUpdate
+from models.schemas import UserCreate, UserUpdate
 
 
 class UserService:
