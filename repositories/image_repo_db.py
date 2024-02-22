@@ -1,6 +1,7 @@
+from datetime import datetime
 from sqlalchemy.orm import Session
 from models.tables import Image
-from schemas.schemas import ImageUpdate
+from models.schemas import ImageUpdate
 from sqlalchemy.sql.expression import func
 
 import uuid
@@ -37,6 +38,7 @@ class ImageRepoDB:
         existing_image = self.get_image_by_id(image_id)
         if existing_image:
             existing_image.image_desc = image.image_desc
+            existing_image.updated_at = datetime.now()
 
             self.db_session.commit()
             self.db_session.refresh(existing_image)
