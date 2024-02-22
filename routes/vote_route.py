@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, Security
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
-from schemas.schemas import VoteCreate
+from models.schemas import VoteCreate
 from services.vote_service import VoteService
 from services.image_service import ImageService
 from services.user_service import UserService

@@ -4,7 +4,7 @@ from jose import jwt
 from services.user_service import UserService
 from datetime import datetime, timedelta
 from utils.utils import check_password
-from schemas.schemas import Token
+from models.schemas import Token
 
 
 SECRET_KEY: str = "2znmyRG!&)oloEKphqFQQ@6{]Q7T&W4S79GAbdqvNX{U2!3ZqR;Rv!:^G}@D-=O)"

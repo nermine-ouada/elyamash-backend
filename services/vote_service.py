@@ -1,5 +1,5 @@
 from repositories.vote_repository import VoteRepository
-from schemas.schemas import VoteCreate
+from models.schemas import VoteCreate
 
 
 class VoteService:

@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from models.tables import Vote, Image
-from schemas.schemas import VoteCreate
+from models.schemas import VoteCreate
 import uuid
 
 
