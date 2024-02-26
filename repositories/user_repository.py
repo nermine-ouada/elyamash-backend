@@ -42,8 +42,9 @@ class UserRepository:
     def update_user(self, user_id: str, user_update: UserUpdate):
         existing_user = self.get_user_by_id(user_id)
         if existing_user:
-            for field, value in user_update.dict().items():
-                setattr(existing_user, field, value)
+            if  user_update.age is not None:
+                existing_user.age=user_update.age
+                
             existing_user.updated_at = datetime.now()
             self.db_session.commit()
             self.db_session.refresh(existing_user)
