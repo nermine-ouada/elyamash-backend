@@ -27,24 +27,30 @@ class ImageRoute:
                 decoded_credentials = decode_bearer_token(credentials.credentials)
                 user_id = decoded_credentials.get("id")
                 role = decoded_credentials.get("role")
+
                 if not (role == "uploader" or role == "admin"):
                     raise HTTPException(
                         status_code=401, detail="No permission to upload images"
                     )
+
                 if not file.content_type.startswith("image"):
                     raise HTTPException(
                         status_code=400, detail="Only image files are allowed"
                     )
+
                 if self.image_service.check_image_existance(file.filename, user_id):
                     raise HTTPException(
                         status_code=409, detail="Image already exists !"
                     )
+
                 filename = file.filename
                 file_content = await file.read()
+
                 if self.image_service.upload_image(user_id, filename, file_content):
                     new_image = self.image_service.create_image(user_id, file.filename)
-                # Return success message
+
                 return {"message": "Upload successful", "image": new_image}
+
             except Exception as e:
                 raise HTTPException(
                     status_code=500, detail=f"An error occurred: {str(e)}"
@@ -57,13 +63,16 @@ class ImageRoute:
             try:
                 decoded_credentials = decode_bearer_token(credentials.credentials)
                 role = decoded_credentials.get("role")
+
                 if role == "admin":
                     images = self.image_service.get_all_images()
                     return images
+
                 else:
                     raise HTTPException(
                         status_code=401, detail="No permission to view this route"
                     )
+
             except Exception as e:
                 raise HTTPException(
                     status_code=500, detail=f"An error occurred: {str(e)}"
@@ -107,19 +116,19 @@ class ImageRoute:
                 )
 
         @self.image_router.get("/image/random")
-        def get_random_images():
+        def get_random_images(
+            credentials: HTTPAuthorizationCredentials = Security(self.security),
+        ):
             try:
-                nb_users=user_service.get_number_of_users()
-                if nb_users<2:
-                    raise HTTPException(
-                        status_code=500, detail="not enough users"
-                    )
+                nb_users = user_service.get_number_of_users()
+                if nb_users < 2:
+                    raise HTTPException(status_code=500, detail="not enough users")
                 random1 = self.image_service.get_random_image()
                 random2 = self.image_service.get_random_image()
                 while random1 == random2 or random1.user_id == random2.user_id:
                     random2 = self.image_service.get_random_image()
 
-                return {"image 1 ": random1.id, "image 2 :": random2.id}
+                return {"image 1 ": random1.id, "image 2 ": random2.id}
             except Exception as e:
                 raise HTTPException(
                     status_code=500, detail=f"An error occurred: {str(e)}"
@@ -188,7 +197,7 @@ class ImageRoute:
                 existing_image = self.image_service.get_image_by_id(image_id)
                 if not existing_image:
                     raise HTTPException(status_code=404, detail="Image not found")
-                
+
                 if existing_image.user_id != user_id or role != "admin":
                     raise HTTPException(
                         status_code=401,
