@@ -108,7 +108,7 @@ class UserRoute:
                 existing_username = self.user_service.get_user_by_username(
                     user.username
                 )
-                if existing_username or existing_user.username == user.username:
+                if existing_username and existing_user.username != user.username:
                     raise HTTPException(
                         status_code=409, detail="username is already registered"
                     )

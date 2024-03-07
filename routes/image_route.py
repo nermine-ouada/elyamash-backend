@@ -197,8 +197,8 @@ class ImageRoute:
                 existing_image = self.image_service.get_image_by_id(image_id)
                 if not existing_image:
                     raise HTTPException(status_code=404, detail="Image not found")
-
-                if existing_image.user_id != user_id or role != "admin":
+                
+                if existing_image.user_id != user_id and role!="admin" :
                     raise HTTPException(
                         status_code=401,
                         detail="No permission to delete this image",
